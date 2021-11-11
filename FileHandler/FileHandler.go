@@ -11,7 +11,7 @@ func GiveTime() time.Time {
 }
 
 func ReadFromFile(filePath string) *os.File {
-	file, err := os.OpenFile(filePath, os.O_RDONLY, 0444)
+	file, err := os.OpenFile(filePath, os.O_RDONLY, 0666)
 	if err != nil {
 		log.Fatal(err)
 		file.Close()
