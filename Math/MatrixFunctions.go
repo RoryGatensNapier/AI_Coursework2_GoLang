@@ -10,6 +10,11 @@ type Vec2 struct {
 	y float64
 }
 
-func Construct(FileData []string) [][]int {
-	return nil
+func ConstructTruthTable(FileData []int) [][]int {
+	dimension := FileData[0]
+	matrix := make([][]int, dimension)
+	for i := 0; i < dimension; i++ {
+		matrix[i] = make([]int, dimension)
+	}
+	return matrix
 }
