@@ -1,10 +1,15 @@
 package matrix
 
-import (
-	"os"
-)
+//import statments
+// "fmt"
+// "log"
+// "strconv"
 
-func Construct(FileData *os.File) [][]int {
-	var matrix [][]int
-	return matrix
+type Vec2 struct {
+	x float64
+	y float64
+}
+
+func Construct(FileData []string) [][]int {
+	return nil
 }
