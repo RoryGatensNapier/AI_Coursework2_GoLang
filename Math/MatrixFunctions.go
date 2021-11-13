@@ -1,7 +1,8 @@
 package matrix
 
 //import statments
-// "fmt"
+import "fmt"
+
 // "log"
 // "strconv"
 
@@ -16,5 +17,9 @@ func ConstructTruthTable(FileData []int) [][]int {
 	for i := 0; i < dimension; i++ {
 		matrix[i] = make([]int, dimension)
 	}
+	locations := FileData[1 : dimension*2]
+	truths := FileData[dimension*2:]
+	fmt.Println("Truths = ", truths)
+	fmt.Println("Locations = ", locations)
 	return matrix
 }
