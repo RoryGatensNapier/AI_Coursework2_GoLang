@@ -11,8 +11,8 @@ type Vec2 struct {
 
 func ConstructTruthTable(FileData []int) [][]int {
 	dimension := FileData[0]
-	locations := FileData[1 : dimension*2]
-	truths := FileData[dimension*2:]
+	locations := FileData[1 : dimension*2+1]
+	truths := FileData[dimension*2+1:]
 	fmt.Println("Truths = ", truths)
 	fmt.Println("Locations = ", locations)
 
