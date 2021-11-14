@@ -12,6 +12,8 @@ func main() {
 	data := FH.ReadFromFile("./cavernFiles/input1.cav")
 	new_ints := FH.ConvertElementsToInt(data)
 	new_matrix := matrices.ConstructTruthTable(new_ints)
+	new_vecMap := matrices.ConstructVectorMapping(new_ints)
 	fmt.Println(new_matrix)
+	fmt.Println(new_vecMap)
 	//fmt.Println(m.Construct(data))
 }
