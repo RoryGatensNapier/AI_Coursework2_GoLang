@@ -1,7 +1,10 @@
 package matrix
 
 //import statments
-import "fmt"
+import (
+	"fmt"
+	"log"
+)
 
 // "log"
 
@@ -10,6 +13,9 @@ type Vec2 struct {
 }
 
 func ConstructTruthTable(FileData []int) [][]int {
+	if len(FileData) == 0 {
+		log.Fatalln("No data passed into ConstructFileData!", log.Llongfile)
+	}
 	dimension := FileData[0]
 	locations := FileData[1 : dimension*2+1]
 	truths := FileData[dimension*2+1:]

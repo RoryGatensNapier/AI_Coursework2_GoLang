@@ -6,12 +6,7 @@ import (
 	"log"
 	"os"
 	"strconv"
-	"time"
 )
-
-func GiveTime() time.Time {
-	return time.Now()
-}
 
 func ReadFromFile(filePath string) []string {
 	file, err := os.OpenFile(filePath, os.O_RDONLY, 0666)
