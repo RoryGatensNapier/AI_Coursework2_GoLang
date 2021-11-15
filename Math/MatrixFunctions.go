@@ -6,8 +6,6 @@ import (
 	"log"
 )
 
-// "log"
-
 type Vec2 struct {
 	x, y int
 }
