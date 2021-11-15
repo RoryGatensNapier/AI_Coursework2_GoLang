@@ -39,7 +39,7 @@ func ConstructVectorMapping(FileData []int) map[int]Vec2 {
 			x = vecSlice[0]
 			y = vecSlice[1]
 			//_ = x + y
-			vectorMappings[i] = Vec2{x, y}
+			vectorMappings[(i/2)+1] = Vec2{x, y}
 		}
 	}
 	return vectorMappings
