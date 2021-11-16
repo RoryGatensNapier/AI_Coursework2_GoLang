@@ -10,6 +10,7 @@ import (
 
 func main() {
 	test_args := os.Args[1:]
+	fmt.Println(test_args)
 	//enter main code here from resources functions
 	data := FH.ReadFromFile("./cavernFiles/input1.cav")
 	new_ints := FH.ConvertElementsToInt(data)
@@ -17,6 +18,5 @@ func main() {
 	new_vecMap := matrices.ConstructVectorMapping(new_ints)
 	fmt.Println("Truth Matrix = ", new_matrix)
 	fmt.Println("Vector Map = ", new_vecMap)
-	fmt.Println(test_args)
 	//fmt.Println(m.Construct(data))
 }
