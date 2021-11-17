@@ -9,10 +9,10 @@ import (
 )
 
 func main() {
-	test_args := os.Args[1:]
-	fmt.Println(test_args)
+	os_args := os.Args[1:]
+	//fmt.Println(os_args[0])
 	//enter main code here from resources functions
-	data := FH.ReadFromFile("./cavernFiles/input1.cav")
+	data := FH.ReadFromFile("./" + os_args[0] + ".cav")
 	new_ints := FH.ConvertElementsToInt(data)
 	new_matrix := matrices.ConstructTruthTable(new_ints)
 	new_vecMap := matrices.ConstructVectorMapping(new_ints)

@@ -11,7 +11,7 @@ import (
 func ReadFromFile(filePath string) []string {
 	file, err := os.OpenFile(filePath, os.O_RDONLY, 0666)
 	if err != nil {
-		log.Fatal("Could not open file at "+filePath, err)
+		log.Fatal(err)
 		file.Close()
 		return nil
 	}
