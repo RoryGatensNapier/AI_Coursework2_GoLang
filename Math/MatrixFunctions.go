@@ -2,23 +2,20 @@ package matrix
 
 //import statments
 import (
-	"fmt"
 	"log"
-)
 
-type Vec2 struct {
-	x, y int
-}
+	dt "github.com/RoryGatensNapier/AI_Coursework2_GoLang/DataTypes"
+)
 
 func ConstructTruthTable(FileData []int) [][]int {
 	if len(FileData) == 0 {
 		log.Fatalln("No data passed into ConstructFileData!", log.Llongfile)
 	}
 	dimension := FileData[0]
-	locations := FileData[1 : dimension*2+1]
+	//locations := FileData[1 : dimension*2+1]
 	truths := FileData[dimension*2+1:]
-	fmt.Println("Raw Truths = ", truths)
-	fmt.Println("Raw Locations = ", locations)
+	//fmt.Println("Raw Truths = ", truths)
+	//fmt.Println("Raw Locations = ", locations)
 
 	matrix := make([][]int, dimension)
 	for i := 0; i < dimension; i++ {
@@ -27,11 +24,11 @@ func ConstructTruthTable(FileData []int) [][]int {
 	return matrix
 }
 
-func ConstructVectorMapping(FileData []int) map[int]Vec2 {
+func ConstructVectorMapping(FileData []int) map[int]dt.Vec2 {
 	dimension := FileData[0]
 	locations := FileData[1 : dimension*2+1]
 
-	vectorMappings := make(map[int]Vec2)
+	vectorMappings := make(map[int]dt.Vec2)
 	for i := 0; i < dimension*2-1; i++ {
 		vecSlice := locations[i : i+2]
 		var (
@@ -42,8 +39,7 @@ func ConstructVectorMapping(FileData []int) map[int]Vec2 {
 		} else {
 			x = vecSlice[0]
 			y = vecSlice[1]
-			//_ = x + y
-			vectorMappings[(i/2)+1] = Vec2{x, y}
+			vectorMappings[(i/2)+1] = dt.Vec2{X: x, Y: y}
 		}
 	}
 	return vectorMappings

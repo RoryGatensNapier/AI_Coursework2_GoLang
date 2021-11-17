@@ -20,8 +20,6 @@ func ReadFromFile(filePath string) []string {
 	if err != nil {
 		log.Fatal("Could not parse .CAV file at "+filePath, err)
 	}
-	//file.Close()
-	//fmt.Println(vals)
 	file.Close()
 	return vals
 }
@@ -29,7 +27,6 @@ func ReadFromFile(filePath string) []string {
 func ConvertElementsToInt(FileData []string) []int {
 	var retVal []int
 	for _, val_F := range FileData {
-		//fmt.Println(val_F)
 		result, err := strconv.Atoi(val_F)
 		if err != nil {
 			log.Fatal("Issue in converting values to int!", err)
