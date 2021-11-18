@@ -10,3 +10,8 @@ type Cave struct {
 	ConnectsTo     []int
 	HeuristicScore float64
 }
+
+type CavernSystem struct {
+	Points map[int]Vec2
+	Truths [][]int
+}
