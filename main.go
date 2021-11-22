@@ -1,9 +1,9 @@
 package main
 
 import (
-	"fmt"
+	//"fmt"
 	//"os"
-
+	dt "github.com/RoryGatensNapier/AI_Coursework2_GoLang/DataTypes"
 	FH "github.com/RoryGatensNapier/AI_Coursework2_GoLang/FileHandler"
 	matrices "github.com/RoryGatensNapier/AI_Coursework2_GoLang/Math"
 	astar "github.com/RoryGatensNapier/AI_Coursework2_GoLang/aStar"
@@ -16,11 +16,9 @@ func main() {
 	//data := FH.ReadFromFile("./" + os_args[0] + ".cav")
 	data := FH.ReadFromFile("./cavernFiles/input1.cav")
 	new_ints := FH.ConvertElementsToInt(data)
-	new_matrix := matrices.ConstructTruthTable(new_ints)
-	new_vecMap := matrices.ConstructVectorMapping(new_ints)
+	CavSys := dt.CavernSystem{Points: matrices.ConstructVectorMapping(new_ints), Truths: matrices.ConstructTruthTable(new_ints)}
 	//fmt.Println("Truth Matrix = ", new_matrix)
-	fmt.Println("Vector Map = ", new_vecMap)
-	start := astar.ConstructCave(1, new_vecMap, new_matrix)
-	fmt.Println(start)
-	//fmt.Println(m.Construct(data))
+	//start := astar.ConstructCave(1, new_vecMap, new_matrix)
+	//fmt.Println(CavSys)
+	astar.DoAStar(CavSys)
 }
