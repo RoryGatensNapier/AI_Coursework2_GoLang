@@ -1,7 +1,6 @@
 package astar
 
 import (
-	"container/heap"
 	"fmt"
 	"math"
 	"sync"
@@ -43,38 +42,13 @@ func ScoreWorker(curCave dt.Cave, neighbour dt.Cave, endCave dt.Cave, result cha
 	result <- neighbour
 }
 
-func ExpandNode(ToExpand dt.Cave, Caves []dt.Cave, visitedCaves []dt.Cave) []dt.Cave {
-	var connectedNodes []int
-	var resultNodes []dt.Cave
-	wg := &sync.WaitGroup{}
-	for i, v := range ToExpand.ConnectsTo {
-		if v == 1 {
-			if len(visitedCaves) > 0 {
-				for _, vis := range visitedCaves {
-					if vis.ID != i+1 {
-						connectedNodes = append(connectedNodes, i+1)
-						break
-					}
-				}
-			} else {
-				connectedNodes = append(connectedNodes, i+1)
-			}
-		}
-	}
-	fmt.Println("Values in connectedNodes = ", connectedNodes)
-	scoresChan := make(chan dt.Cave, len(connectedNodes))
-	wg.Add(len(connectedNodes))
-	for _, v := range connectedNodes {
-		go ScoreWorker(ToExpand, Caves[v-1], Caves[len(Caves)-1], scoresChan, wg)
-	}
-	wg.Wait()
-	close(scoresChan)
-	for x := range scoresChan {
-		//fmt.Println(x, " result added")
-		resultNodes = append(resultNodes, x)
-	}
-	//fmt.Println("made it")
-	return resultNodes
+func NC_ScoreWorker(curCave dt.Cave, neighbour dt.Cave, endCave dt.Cave) dt.Cave {
+	n_dist := EuclideanDistance(curCave, neighbour) + curCave.TraversedDistance
+	e_dist := EuclideanDistance(neighbour, endCave)
+	score := n_dist + e_dist
+	neighbour.TraversedDistance = n_dist
+	neighbour.HeuristicScore = score
+	return neighbour
 }
 
 func findNeighbours(ToExpand dt.Cave, Caves []dt.Cave, visitedCaves []dt.Cave) []int {
@@ -87,7 +61,7 @@ func findNeighbours(ToExpand dt.Cave, Caves []dt.Cave, visitedCaves []dt.Cave) [
 						connectedNodes = append(connectedNodes, i+1)
 						break
 					} else if vis.ID == i+1 && Caves[i].HeuristicScore < vis.HeuristicScore {
-						//fmt.Println("found node through lesser cost?")
+						fmt.Println("found node through lesser cost?")
 					}
 				}
 			} else {
@@ -100,7 +74,7 @@ func findNeighbours(ToExpand dt.Cave, Caves []dt.Cave, visitedCaves []dt.Cave) [
 }
 
 func calcScores(nieghbour_ids []int, ToExpand dt.Cave, Caves []dt.Cave, visitedCaves []dt.Cave) []dt.Cave {
-	var resultingCaves []dt.Cave
+	var resultingCaves dt.CaveHeap
 	scoresChan := make(chan dt.Cave, len(nieghbour_ids))
 	wg := &sync.WaitGroup{}
 	wg.Add(len(nieghbour_ids))
@@ -118,48 +92,19 @@ func calcScores(nieghbour_ids []int, ToExpand dt.Cave, Caves []dt.Cave, visitedC
 	return resultingCaves
 }
 
-func DoAStar(CavSys dt.CavernSystem) {
-	Caves := ConstructCaves(CavSys)
-	start := Caves[0]
-	end := Caves[len(Caves)-1]
-	initHeuristic := EuclideanDistance(start, end)
-	Caves[0].HeuristicScore = initHeuristic
-	var openCaves dt.CaveHeap = dt.CaveHeap{Caves[0]}
-	var visitedCaves []dt.Cave
-	openCaves.Init()
-	for len(openCaves) > 0 {
-		currentCave := openCaves[0]
-		fmt.Println("Current active cave is ", currentCave)
-		fmt.Println("Visited caves = ", visitedCaves)
-		if currentCave.ID == end.ID {
-			//return foundPath
-			fmt.Println("Found end!")
-			return
-		}
-		for _, v := range visitedCaves {
-			if v.ID == currentCave.ID {
-				fmt.Println("already visited this node!")
-				fmt.Println("current cave: ", currentCave.ID)
-				fmt.Println("test cave: ", v.ID)
-				for test_i, test_v := range openCaves {
-					fmt.Println("Cave ", test_i, " is ", test_v)
-				}
-				return
-			}
-		}
-		visitedCaves = append(visitedCaves, openCaves[0])
-		//openCaves.Pop()
-		openCaves.Remove(0)
-		openCaves.Fix(0)
-		newNodes := ExpandNode(currentCave, Caves, visitedCaves)
-		for _, v := range newNodes {
-			heap.Push(&openCaves, v)
-		}
-		//openCaves.Init()
-		fmt.Println("top cave now equals = ", openCaves[0])
-		fmt.Println("run success")
+func NC_calcScores(nieghbour_ids []int, ToExpand dt.Cave, Caves []dt.Cave, visitedCaves []dt.Cave) []dt.Cave {
+	var resultingCaves dt.CaveHeap
+	var pre_scores []dt.Cave
+	for _, v := range nieghbour_ids {
+		pre_scores = append(pre_scores, NC_ScoreWorker(ToExpand, Caves[v-1], Caves[len(Caves)-1]))
 	}
-	//visited.append(Caves[0])
+	for _, x := range pre_scores {
+		foundFromConstruct := append(ToExpand.FoundFrom, ToExpand.ID)
+		x.FoundFrom = append(x.FoundFrom, foundFromConstruct...)
+		resultingCaves = append(resultingCaves, x)
+	}
+	//fmt.Println("made it")
+	return resultingCaves
 }
 
 func DoAStar_V2(CavSys dt.CavernSystem) []int {
@@ -176,9 +121,13 @@ func DoAStar_V2(CavSys dt.CavernSystem) []int {
 		currentCave := &openCaves[0]
 		//fmt.Println("current cave is ", *currentCave)
 		if currentCave.ID == end.ID {
-			//return foundPath
-			//fmt.Println("Found end!")
+			for _, v := range visitedCaves {
+				if v.ID == currentCave.ID && v.HeuristicScore < currentCave.HeuristicScore {
+					*currentCave = v
+				}
+			}
 			currentCave.FoundFrom = append(currentCave.FoundFrom, currentCave.ID)
+			//fmt.Println(openCaves)
 			fmt.Println(currentCave.FoundFrom)
 			fmt.Println(currentCave.TraversedDistance)
 			return path
@@ -186,8 +135,8 @@ func DoAStar_V2(CavSys dt.CavernSystem) []int {
 		for _, v := range visitedCaves {
 			if v.ID == currentCave.ID {
 				if currentCave.HeuristicScore < v.HeuristicScore {
-					//fmt.Println("need to deal with this")
-					v = *currentCave
+					fmt.Println("need to deal with this")
+
 					break
 				}
 				// fmt.Println("already visited this node!")
