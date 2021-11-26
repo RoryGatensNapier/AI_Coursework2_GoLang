@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"os"
 
 	dt "github.com/RoryGatensNapier/AI_Coursework2_GoLang/DataTypes"
@@ -12,7 +11,7 @@ import (
 
 func main() {
 	os_args := os.Args[1:]
-	fmt.Println(os_args[0])
+	//fmt.Println(os_args[0])
 	//enter main code here from resources functions
 	data := FH.ReadFromFile("./" + os_args[0] + ".cav")
 	//data := FH.ReadFromFile("./cavernFiles/generated30-1.cav") //REMOVE LATER
