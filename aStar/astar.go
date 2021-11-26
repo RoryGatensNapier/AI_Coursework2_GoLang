@@ -128,7 +128,7 @@ func DoAStar_V2(CavSys dt.CavernSystem) []int {
 		//fmt.Println("current cave is ", *currentCave)
 		if currentCave.ID == end.ID {
 			for _, v := range visitedCaves {
-				if v.ID == currentCave.ID && v.HeuristicScore < currentCave.HeuristicScore {
+				if v.ID == currentCave.ID && v.HeuristicScore > currentCave.HeuristicScore {
 					*currentCave = v
 				}
 			}
