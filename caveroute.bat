@@ -9,7 +9,6 @@ rem or
 rem java -jar myprogram.jar %1
 
 AI_Coursework2_GoLang.exe %1
-pause
 
 set ENDTIME=%TIME%
 
