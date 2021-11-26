@@ -15,6 +15,7 @@ type Cave struct {
 	ConnectsTo        []int
 	TraversedDistance float64
 	HeuristicScore    float64
+	FoundFrom         []int
 }
 
 type CaveHeap []Cave
