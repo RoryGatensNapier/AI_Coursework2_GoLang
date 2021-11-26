@@ -1,6 +1,7 @@
 package astar
 
 import (
+	//"fmt"
 	"fmt"
 	"math"
 	"sync"
@@ -61,7 +62,7 @@ func findNeighbours(ToExpand dt.Cave, Caves []dt.Cave, visitedCaves []dt.Cave) [
 						connectedNodes = append(connectedNodes, i+1)
 						break
 					} else if vis.ID == i+1 && Caves[i].HeuristicScore < vis.HeuristicScore {
-						fmt.Println("found node through lesser cost?")
+						//fmt.Println("found node through lesser cost?")
 					}
 				}
 			} else {
