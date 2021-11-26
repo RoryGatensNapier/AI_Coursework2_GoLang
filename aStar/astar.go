@@ -84,6 +84,11 @@ func calcScores(nieghbour_ids []int, ToExpand dt.Cave, Caves []dt.Cave, visitedC
 	wg.Wait()
 	close(scoresChan)
 	for x := range scoresChan {
+		for _, v := range ToExpand.FoundFrom {
+			if ToExpand.ID == v {
+				continue
+			}
+		}
 		foundFromConstruct := append(ToExpand.FoundFrom, ToExpand.ID)
 		x.FoundFrom = append(x.FoundFrom, foundFromConstruct...)
 		resultingCaves = append(resultingCaves, x)
@@ -129,21 +134,19 @@ func DoAStar_V2(CavSys dt.CavernSystem) []int {
 			currentCave.FoundFrom = append(currentCave.FoundFrom, currentCave.ID)
 			//fmt.Println(openCaves)
 			fmt.Println(currentCave.FoundFrom)
-			fmt.Println(currentCave.TraversedDistance)
+			//fmt.Println(currentCave.TraversedDistance)
 			return path
 		}
-		for _, v := range visitedCaves {
+		for i, v := range visitedCaves {
 			if v.ID == currentCave.ID {
 				if currentCave.HeuristicScore < v.HeuristicScore {
-					fmt.Println("need to deal with this")
-
+					//fmt.Println(openCaves)
+					visitedCaves[i] = *currentCave
+					//fmt.Println(visitedCaves)
 					break
+				} else {
+					*currentCave = openCaves[1]
 				}
-				// fmt.Println("already visited this node!")
-				// fmt.Println("current cave: ", currentCave)
-				// fmt.Println("test cave: ", v)
-
-				break
 			}
 		}
 		exploreNeighbours := findNeighbours(*currentCave, Caves, visitedCaves)
