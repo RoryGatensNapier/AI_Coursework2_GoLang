@@ -74,12 +74,12 @@ func findNeighbours(ToExpand dt.Cave, Caves []dt.Cave, visitedCaves []dt.Cave) [
 	return connectedNodes
 }
 
-func calcScores(nieghbour_ids []int, ToExpand dt.Cave, Caves []dt.Cave, visitedCaves []dt.Cave) []dt.Cave {
+func calcScores(neighbour_ids []int, ToExpand dt.Cave, Caves []dt.Cave, visitedCaves []dt.Cave) []dt.Cave {
 	var resultingCaves dt.CaveHeap
-	scoresChan := make(chan dt.Cave, len(nieghbour_ids))
+	scoresChan := make(chan dt.Cave, len(neighbour_ids))
 	wg := &sync.WaitGroup{}
-	wg.Add(len(nieghbour_ids))
-	for _, v := range nieghbour_ids {
+	wg.Add(len(neighbour_ids))
+	for _, v := range neighbour_ids {
 		go ScoreWorker(ToExpand, Caves[v-1], Caves[len(Caves)-1], scoresChan, wg)
 	}
 	wg.Wait()
@@ -115,11 +115,11 @@ func NC_calcScores(nieghbour_ids []int, ToExpand dt.Cave, Caves []dt.Cave, visit
 
 func DoAStar_V2(CavSys dt.CavernSystem) []int {
 	Caves := ConstructCaves(CavSys)
-	start := Caves[0]
-	end := Caves[len(Caves)-1]
-	initHeuristic := EuclideanDistance(start, end)
+	start := &Caves[0]
+	end := &Caves[len(Caves)-1]
+	initHeuristic := EuclideanDistance(*start, *end)
 	Caves[0].HeuristicScore = initHeuristic
-	var openCaves dt.CaveHeap = dt.CaveHeap{Caves[0]}
+	var openCaves dt.CaveHeap = dt.CaveHeap{*start}
 	var visitedCaves []dt.Cave
 	var path []int
 	openCaves.Init()

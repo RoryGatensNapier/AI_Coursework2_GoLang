@@ -33,7 +33,7 @@ func (cc *CaveHeap) Push(x interface{}) {
 func (cc *CaveHeap) Pop() interface{} {
 	old := *cc
 	n := len(old)
-	retCave := old[n-1]
+	retCave := old[:n-1]
 	*cc = old[0 : n-1]
 	return retCave
 }
