@@ -124,7 +124,7 @@ func DoAStar_V2(CavSys dt.CavernSystem) []int {
 	openCaves.Init()
 	for len(openCaves) > 0 {
 		currentCave := &openCaves[0]
-		fmt.Println("current cave is ", *currentCave)
+		//fmt.Println("current cave is ", currentCave.ID)
 		if currentCave.ID == end.ID {
 			for _, v := range visitedCaves {
 				if v.ID == currentCave.ID && v.HeuristicScore < currentCave.HeuristicScore {
@@ -134,7 +134,7 @@ func DoAStar_V2(CavSys dt.CavernSystem) []int {
 			currentCave.FoundFrom = append(currentCave.FoundFrom, currentCave.ID)
 			//fmt.Println(openCaves)
 			fmt.Println(currentCave.FoundFrom)
-			//fmt.Println(currentCave.TraversedDistance)
+			fmt.Println(currentCave.TraversedDistance)
 			return path
 		}
 		for i, v := range visitedCaves {
