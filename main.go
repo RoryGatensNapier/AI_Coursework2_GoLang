@@ -14,7 +14,7 @@ func main() {
 	//fmt.Println(os_args[0])
 	//enter main code here from resources functions
 	//data := FH.ReadFromFile("./cavernFiles/" + os_args[0] + ".cav")
-	data := FH.ReadFromFile("./cavernFiles/generated1000-1.cav") //REMOVE LATER
+	data := FH.ReadFromFile("./cavernFiles/generated30-1.cav") //REMOVE LATER
 	new_ints := FH.ConvertElementsToInt(data)
 	CavSys := dt.CavernSystem{Points: matrices.ConstructVectorMapping(new_ints), Truths: matrices.ConstructTruthTable(new_ints)}
 	astar.DoAStar_V2(CavSys)

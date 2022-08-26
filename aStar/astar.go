@@ -1,7 +1,6 @@
 package astar
 
 import (
-	//"fmt"
 	"fmt"
 	"math"
 	"sync"
@@ -125,10 +124,10 @@ func DoAStar_V2(CavSys dt.CavernSystem) []int {
 	openCaves.Init()
 	for len(openCaves) > 0 {
 		currentCave := &openCaves[0]
-		//fmt.Println("current cave is ", *currentCave)
+		fmt.Println("current cave is ", *currentCave)
 		if currentCave.ID == end.ID {
 			for _, v := range visitedCaves {
-				if v.ID == currentCave.ID && v.HeuristicScore > currentCave.HeuristicScore {
+				if v.ID == currentCave.ID && v.HeuristicScore < currentCave.HeuristicScore {
 					*currentCave = v
 				}
 			}
@@ -151,7 +150,7 @@ func DoAStar_V2(CavSys dt.CavernSystem) []int {
 			}
 		}
 		exploreNeighbours := findNeighbours(*currentCave, Caves, visitedCaves)
-		scoredNeighbours := calcScores(exploreNeighbours, *currentCave, Caves, visitedCaves)
+		scoredNeighbours := NC_calcScores(exploreNeighbours, *currentCave, Caves, visitedCaves)
 		visitedCaves = append(visitedCaves, *currentCave)
 		openCaves.Remove(0)
 		for _, v := range scoredNeighbours {
